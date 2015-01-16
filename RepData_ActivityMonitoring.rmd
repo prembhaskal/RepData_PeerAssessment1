@@ -1,0 +1,37 @@
+---
+title: "RepData_ActivityMonitoring"
+---
+
+Loading and pre-processing the activity monitoring date.
+
+```{r}
+unzip("activity.zip")
+
+activityData <- read.csv("activity.csv")
+# converting date from factors to date
+activityData$date <- as.Date(activityData$date, "%Y-%m-%d")
+
+```
+
+plot for total number of steps per day
+```{r}
+# ignoring the data with NAs
+completeData <- activityData[!is.na(activityData$steps), ]
+
+aggByDate <- aggregate(completeData$steps, by = list(completeData$date), FUN = sum)
+colnames(aggByDate) <- c("date", "totalSteps")
+
+# plot a bar plot not sure why they call it as histogram
+barplot(aggByDate$totalSteps, names.arg = aggByDate$date)
+
+# mean
+meanSteps <- mean(aggByDate$totalSteps)
+
+# order the data for finding the mean.
+orderedData <- aggByDate[order(aggByDate$totalSteps),]
+medianSteps <- median(orderedData$totalSteps)
+
+```
+The mean number of steps taken per day are `r meanSteps`.
+The median number of steps are `r medianSteps`.
+
