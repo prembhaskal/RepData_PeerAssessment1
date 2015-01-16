@@ -21,8 +21,8 @@ completeData <- activityData[!is.na(activityData$steps), ]
 aggByDate <- aggregate(completeData$steps, by = list(completeData$date), FUN = sum)
 colnames(aggByDate) <- c("date", "totalSteps")
 
-# plot a bar plot not sure why they call it as histogram
-barplot(aggByDate$totalSteps, names.arg = aggByDate$date)
+# plot a bar plot not sure why questions refers to a histogram
+barplot(aggByDate$totalSteps, names.arg = aggByDate$date, ylab = "total steps")
 
 # mean
 meanSteps <- mean(aggByDate$totalSteps)

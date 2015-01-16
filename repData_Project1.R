@@ -26,3 +26,15 @@ meanSteps <- mean(aggByDate$totalSteps)
 # order the data for finding the mean.
 orderedData <- aggByDate[order(aggByDate$totalSteps),]
 medianSteps <- median(orderedData$totalSteps)
+
+
+# Q2 : What is the average daily activity pattern?
+  aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
+  colnames(aggByInterval) <- c("interval", "averageSteps")
+  
+  plot(aggByInterval$interval, aggByInterval$averageSteps, type = "l", xlab = "interval", ylab = "average_steps")
+
+  # maximum average  number of steps
+  maxSteps <- max(aggByInterval$averageSteps)
+  maxStepInterval <- aggByInterval[ aggByInterval$averageSteps == maxSteps, "interval"]
+
