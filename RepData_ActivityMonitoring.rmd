@@ -2,36 +2,58 @@
 title: "RepData_ActivityMonitoring"
 ---
 
-Loading and pre-processing the activity monitoring date.
+
+``` {r}
+# load the libraries
+  library(data.table)
+  library(dplyr)
+  library(ggplot2)
+```
+
+
+### Loading and pre-processing the activity monitoring date.
 
 ```{r}
-unzip("activity.zip")
-
-activityData <- read.csv("activity.csv")
-# converting date from factors to date
-activityData$date <- as.Date(activityData$date, "%Y-%m-%d")
+  unzip("activity.zip")
+  
+  activityData <- read.csv("activity.csv")
+  # converting date from factors to date
+  activityData$date <- as.Date(activityData$date, "%Y-%m-%d")
 
 ```
 
-plot for total number of steps per day
+### plot for total number of steps per day
 ```{r}
-# ignoring the data with NAs
-completeData <- activityData[!is.na(activityData$steps), ]
-
-aggByDate <- aggregate(completeData$steps, by = list(completeData$date), FUN = sum)
-colnames(aggByDate) <- c("date", "totalSteps")
-
-# plot a bar plot not sure why questions refers to a histogram
-barplot(aggByDate$totalSteps, names.arg = aggByDate$date, ylab = "total steps")
-
-# mean
-meanSteps <- mean(aggByDate$totalSteps)
-
-# order the data for finding the mean.
-orderedData <- aggByDate[order(aggByDate$totalSteps),]
-medianSteps <- median(orderedData$totalSteps)
+  # ignoring the data with NAs
+  completeData <- activityData[!is.na(activityData$steps), ]
+  
+  aggByDate <- aggregate(completeData$steps, by = list(completeData$date), FUN = sum)
+  colnames(aggByDate) <- c("date", "totalSteps")
+  
+  # plot a bar plot not sure why questions refers to a histogram
+  barplot(aggByDate$totalSteps, names.arg = aggByDate$date, ylab = "total steps")
+  
+  # mean
+  meanSteps <- mean(aggByDate$totalSteps)
+  
+  # order the data for finding the mean.
+  orderedData <- aggByDate[order(aggByDate$totalSteps),]
+  medianSteps <- median(orderedData$totalSteps)
 
 ```
 The mean number of steps taken per day are `r meanSteps`.
 The median number of steps are `r medianSteps`.
 
+### Q2 : What is the average daily activity pattern?
+```{r}
+  aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
+  colnames(aggByInterval) <- c("interval", "averageSteps")
+  
+  plot(aggByInterval$interval, aggByInterval$averageSteps, type = "l", xlab = "interval", ylab = "average_steps")
+
+  # maximum average  number of steps
+  maxSteps <- max(aggByInterval$averageSteps)
+  maxStepInterval <- aggByInterval[ aggByInterval$averageSteps == maxSteps, "interval"]
+```
+
+The interval `r maxStepInterval` has the highest average steps across all days.
