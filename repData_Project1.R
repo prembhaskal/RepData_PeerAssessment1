@@ -27,11 +27,10 @@ library(ggplot2)
   #     xlab = "day", ylab = "total steps", cex.lab = 0.2, las = 2, space = 0.5,
   #     main = "total steps taken on each day")
 
-  g <- ggplot(data = aggByDate, aes(x = date, y = totalSteps))
-  g <- g + geom_bar(stat = "identity")
-  g <- g + labs(x = "date", y = "total steps")
-  g <- g + ggtitle("total number of steps per day")
-  print(g)
+  hist(aggByDate$totalSteps, breaks = 15,
+       xlim = c(0, 25000), ylim = c(0,20),
+       xlab = "total steps",
+       main = "histogram - total steps per day")
 
 
 # mean
@@ -97,6 +96,11 @@ library(ggplot2)
   g <- g + labs(x = "date", y = "total steps")
   g <- g + ggtitle("imputed data - total number of steps per day")
   print(g)
+
+  hist(filledAggByDate$totalSteps, breaks = 15,
+     xlim = c(0, 25000), ylim = c(0,25),
+     xlab = "total steps",
+     main = "histogram - imputed day total steps per day")
   
   # finding mean
   filledMeanSteps <- mean(filledAggByDate$totalSteps)

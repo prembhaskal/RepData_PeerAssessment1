@@ -4,14 +4,15 @@ output:
   html_document:
     keep_md: yes
 ---
-  
+
+# Activity Monitoring - reproducible research
 
 
 ```r
 # load the libraries
-  suppressPackageStartupMessages(library(data.table))
-  suppressPackageStartupMessages(library(dplyr))
-  suppressPackageStartupMessages(library(ggplot2))
+  library(data.table)
+  library(dplyr)
+  library(ggplot2)
 ```
 
   
@@ -35,12 +36,10 @@ output:
   aggByDate <- aggregate(completeData$steps, by = list(completeData$date), FUN = sum)
   colnames(aggByDate) <- c("date", "totalSteps")
   
-  # plot a bar plot not sure why questions refers to a histogram
-   g <- ggplot(data = aggByDate, aes(x = date, y = totalSteps))
-  g <- g + geom_bar(stat = "identity")
-  g <- g + labs(x = "date", y = "total steps")
-  g <- g + ggtitle("total number of steps per day")
-  print(g)
+  hist(aggByDate$totalSteps, breaks = 15,
+       xlim = c(0, 25000), ylim = c(0,20),
+       xlab = "total steps",
+       main = "histogram - total steps per day")
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
@@ -57,7 +56,7 @@ The mean number of steps taken per day are 1.0766189 &times; 10<sup>4</sup>.
 The median number of steps are 10765.
 
   
-### Q2 : What is the average daily activity pattern?
+### What is the average daily activity pattern?
 
 ```r
   aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
@@ -122,11 +121,10 @@ The total number of missing values are 2304.
   filledAggByDate <- aggregate(filledActData$steps, by = list(filledActData$date), FUN = sum)
   colnames(filledAggByDate) <- c("date", "totalSteps")
   
-  g <- ggplot(data = filledAggByDate, aes(x = date, y = totalSteps))
-  g <- g + geom_bar(stat = "identity")
-  g <- g + labs(x = "date", y = "total steps")
-  g <- g + ggtitle("imputed data - total number of steps per day")
-  print(g)
+  hist(filledAggByDate$totalSteps, breaks = 15,
+     xlim = c(0, 25000), ylim = c(0,25),
+     xlab = "total steps",
+     main = "histogram - imputed day total steps per day")
 ```
 
 ![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 

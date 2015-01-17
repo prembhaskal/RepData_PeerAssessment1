@@ -4,13 +4,14 @@ output:
   html_document:
     keep_md: yes
 ---
-  
+
+# Activity Monitoring - reproducible research
 
 ``` {r}
 # load the libraries
-  suppressPackageStartupMessages(library(data.table))
-  suppressPackageStartupMessages(library(dplyr))
-  suppressPackageStartupMessages(library(ggplot2))
+  library(data.table)
+  library(dplyr)
+  library(ggplot2)
 ```
 
   
@@ -33,12 +34,10 @@ output:
   aggByDate <- aggregate(completeData$steps, by = list(completeData$date), FUN = sum)
   colnames(aggByDate) <- c("date", "totalSteps")
   
-  # plot a bar plot not sure why questions refers to a histogram
-   g <- ggplot(data = aggByDate, aes(x = date, y = totalSteps))
-  g <- g + geom_bar(stat = "identity")
-  g <- g + labs(x = "date", y = "total steps")
-  g <- g + ggtitle("total number of steps per day")
-  print(g)
+  hist(aggByDate$totalSteps, breaks = 15,
+       xlim = c(0, 25000), ylim = c(0,20),
+       xlab = "total steps",
+       main = "histogram - total steps per day")
   
   # mean
   meanSteps <- mean(aggByDate$totalSteps)
@@ -52,7 +51,7 @@ The mean number of steps taken per day are `r meanSteps`.
 The median number of steps are `r medianSteps`.
 
   
-### Q2 : What is the average daily activity pattern?
+### What is the average daily activity pattern?
 ```{r}
   aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
   colnames(aggByInterval) <- c("interval", "averageSteps")
@@ -110,11 +109,10 @@ The total number of missing values are `r missingValuesCount`.
   filledAggByDate <- aggregate(filledActData$steps, by = list(filledActData$date), FUN = sum)
   colnames(filledAggByDate) <- c("date", "totalSteps")
   
-  g <- ggplot(data = filledAggByDate, aes(x = date, y = totalSteps))
-  g <- g + geom_bar(stat = "identity")
-  g <- g + labs(x = "date", y = "total steps")
-  g <- g + ggtitle("imputed data - total number of steps per day")
-  print(g)
+  hist(filledAggByDate$totalSteps, breaks = 15,
+     xlim = c(0, 25000), ylim = c(0,25),
+     xlab = "total steps",
+     main = "histogram - imputed day total steps per day")
   
   # finding mean
   filledMeanSteps <- mean(filledAggByDate$totalSteps)
