@@ -7,17 +7,21 @@ output:
 
 # Activity Monitoring - reproducible research
 
-``` {r}
+``` {r loading_libraries}
 # load the libraries
   library(data.table)
   library(dplyr)
   library(ggplot2)
 ```
 
+```{r setoptions}
+# setting global options.
+opts_chunk$set(fig.width = 12)
+```
   
 ### Loading and pre-processing the activity monitoring date.
 
-```{r}
+```{r loading_data}
   unzip("activity.zip")
   
   activityData <- read.csv("activity.csv")
@@ -27,7 +31,7 @@ output:
 ```
   
 ### plot for total number of steps per day
-```{r}
+```{r total_steps_per_day}
   # ignoring the data with NAs
   completeData <- activityData[!is.na(activityData$steps), ]
   
@@ -35,7 +39,7 @@ output:
   colnames(aggByDate) <- c("date", "totalSteps")
   
   hist(aggByDate$totalSteps, breaks = 15,
-       xlim = c(0, 25000), ylim = c(0,20),
+       xlim = c(0, 25000), ylim = c(0,25),
        xlab = "total steps",
        main = "histogram - total steps per day")
   
@@ -52,7 +56,7 @@ The median number of steps are `r medianSteps`.
 
   
 ### What is the average daily activity pattern?
-```{r}
+```{r average_daily_activity_pattern}
   aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
   colnames(aggByInterval) <- c("interval", "averageSteps")
   
@@ -69,7 +73,7 @@ The interval `r maxStepInterval` has the highest average steps ( `r maxSteps`) a
 
   
 ### Imputing missing values
-```{r}
+```{r counting_missing_values}
 # total number of missing values in the dataset.
   missingValues = activityData[is.na(activityData$steps),]
   missingValuesCount = nrow(missingValues)
@@ -80,7 +84,7 @@ The total number of missing values are `r missingValuesCount`.
 #### Strategy for imputing values:
 The missing values in any interval are replaced by average steps for that interval calculated across all days.
   
-```{r}
+```{r imputing_missing_values}
 # filling missing value in any interval by getting the average steps for that interval across all days.
 # creating a data.table for faster access.
   avgStepsByInterval <- data.table(aggByInterval)
@@ -108,7 +112,7 @@ The missing values in any interval are replaced by average steps for that interv
 
 ```
 
-``` {r}
+``` {r total_steps_filled_dataset}
   # plot for imputedDataSet
   filledAggByDate <- aggregate(filledActData$steps, by = list(filledActData$date), FUN = sum)
   colnames(filledAggByDate) <- c("date", "totalSteps")
@@ -132,7 +136,7 @@ so we see that the mean is same as before, but the median has changed for the fi
   
 ### Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+```{r plot_by_weekdays}
   # get the weekday and weekend as a column in the dataset.
   isWeekend <- grepl("^(Saturday|Sunday)$", weekdays(filledActData$date))
   # factor variable indicating weekday and weekend.

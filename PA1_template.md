@@ -15,6 +15,11 @@ output:
   library(ggplot2)
 ```
 
+
+```r
+# setting global options.
+opts_chunk$set(fig.width = 12)
+```
   
 ### Loading and pre-processing the activity monitoring date.
 
@@ -37,12 +42,12 @@ output:
   colnames(aggByDate) <- c("date", "totalSteps")
   
   hist(aggByDate$totalSteps, breaks = 15,
-       xlim = c(0, 25000), ylim = c(0,20),
+       xlim = c(0, 25000), ylim = c(0,25),
        xlab = "total steps",
        main = "histogram - total steps per day")
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![plot of chunk total_steps_per_day](figure/total_steps_per_day-1.png) 
 
 ```r
   # mean
@@ -67,7 +72,7 @@ The median number of steps are 10765.
        main = "average steps in different intervals.")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk average_daily_activity_pattern](figure/average_daily_activity_pattern-1.png) 
 
 ```r
   # maximum average  number of steps
@@ -131,7 +136,7 @@ The missing values in any interval are replaced by average steps for that interv
      main = "histogram - imputed day total steps per day")
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
+![plot of chunk total_steps_filled_dataset](figure/total_steps_filled_dataset-1.png) 
 
 ```r
   # finding mean
@@ -168,5 +173,5 @@ so we see that the mean is same as before, but the median has changed for the fi
   print(g)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk plot_by_weekdays](figure/plot_by_weekdays-1.png) 
 
