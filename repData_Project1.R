@@ -23,7 +23,16 @@ library(ggplot2)
   colnames(aggByDate) <- c("date", "totalSteps")
 
 # plot a bar plot not sure why they call it as histogram
-  barplot(aggByDate$totalSteps, names.arg = aggByDate$date)
+  #barplot(aggByDate$totalSteps, names.arg = aggByDate$date, 
+  #     xlab = "day", ylab = "total steps", cex.lab = 0.2, las = 2, space = 0.5,
+  #     main = "total steps taken on each day")
+
+  g <- ggplot(data = aggByDate, aes(x = date, y = totalSteps))
+  g <- g + geom_bar(stat = "identity")
+  g <- g + labs(x = "date", y = "total steps")
+  g <- g + ggtitle("total number of steps per day")
+  print(g)
+
 
 # mean
   meanSteps <- mean(aggByDate$totalSteps)
@@ -39,7 +48,9 @@ library(ggplot2)
   aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
   colnames(aggByInterval) <- c("interval", "averageSteps")
   
-  plot(aggByInterval$interval, aggByInterval$averageSteps, type = "l", xlab = "interval", ylab = "average_steps")
+  plot(aggByInterval$interval, aggByInterval$averageSteps, type = "l", 
+       xlab = "interval", ylab = "average_steps", 
+       main = "average steps in different intervals.")
   
 # maximum average  number of steps
   maxSteps <- max(aggByInterval$averageSteps)
@@ -80,7 +91,12 @@ library(ggplot2)
   filledAggByDate <- aggregate(filledActData$steps, by = list(filledActData$date), FUN = sum)
   colnames(filledAggByDate) <- c("date", "totalSteps")
   
-  barplot(filledAggByDate$totalSteps, names.arg = filledAggByDate$date)
+  # barplot(filledAggByDate$totalSteps, names.arg = filledAggByDate$date)
+  g <- ggplot(data = filledAggByDate, aes(x = date, y = totalSteps))
+  g <- g + geom_bar(stat = "identity")
+  g <- g + labs(x = "date", y = "total steps")
+  g <- g + ggtitle("imputed data - total number of steps per day")
+  print(g)
   
   # finding mean
   filledMeanSteps <- mean(filledAggByDate$totalSteps)
@@ -95,15 +111,18 @@ library(ggplot2)
 ## Are there differences in activity patterns between weekdays and weekends?
   # get the weekday and weekend as a column in the dataset.
   isWeekend <- grepl("^(Saturday|Sunday)$", weekdays(filledActData$date))
+  # factor variable indicating weekday and weekend.
   isWeekend <- as.factor(isWeekend)
-  levels(isWeekend) <- c("WeekDay", "WeekEnd")
+  levels(isWeekend) <- c("weekday", "weekend")
 
   filledActData <- mutate(filledActData, isWeekend)
 
   aggByIntervalAndWeekend <- aggregate(steps ~ interval + isWeekend, data = filledActData, mean)
 
 
-g <- ggplot(aggByIntervalAndWeekend, aes(x = interval, y = steps))
-g <- g + geom_line()
-g <- g + facet_grid(isWeekend ~ .)
-print(g)
+  g <- ggplot(aggByIntervalAndWeekend, aes(x = interval, y = steps))
+  g <- g + geom_line()
+  g <- g + facet_grid(isWeekend ~ .)
+  g <- g + labs(x = "interval", y = "total steps")
+  g <- g + ggtitle("imputed data - average steps across different intervals/weekend/weekdays")
+  print(g)
