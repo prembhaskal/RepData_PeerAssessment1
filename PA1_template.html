@@ -273,6 +273,10 @@ The median number of steps are 10765.</p>
 
 <p>The total number of missing values are 2304.</p>
 
+<h4>Strategy for imputing values:</h4>
+
+<p>The missing values in any interval are replaced by average steps for that interval calculated across all days.</p>
+
 <pre><code class="r"># filling missing value in any interval by getting the average steps for that interval across all days.
 # creating a data.table for faster access.
   avgStepsByInterval &lt;- data.table(aggByInterval)

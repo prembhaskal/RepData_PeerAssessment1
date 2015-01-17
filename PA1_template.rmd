@@ -76,6 +76,10 @@ The interval `r maxStepInterval` has the highest average steps ( `r maxSteps`) a
 ```
 The total number of missing values are `r missingValuesCount`.
 
+
+#### Strategy for imputing values:
+The missing values in any interval are replaced by average steps for that interval calculated across all days.
+  
 ```{r}
 # filling missing value in any interval by getting the average steps for that interval across all days.
 # creating a data.table for faster access.

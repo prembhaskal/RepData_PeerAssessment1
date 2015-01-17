@@ -88,6 +88,10 @@ The interval 835 has the highest average steps ( 206.1698113) across all days.
 The total number of missing values are 2304.
 
 
+#### Strategy for imputing values:
+The missing values in any interval are replaced by average steps for that interval calculated across all days.
+  
+
 ```r
 # filling missing value in any interval by getting the average steps for that interval across all days.
 # creating a data.table for faster access.
