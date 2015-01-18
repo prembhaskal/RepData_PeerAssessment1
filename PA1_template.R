@@ -52,9 +52,15 @@ library(ggplot2)
   aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
   colnames(aggByInterval) <- c("interval", "averageSteps")
   
-  plot(aggByInterval$interval, aggByInterval$averageSteps, type = "l", 
-       xlab = "interval", ylab = "average_steps", 
-       main = "average steps in different intervals.")
+#   plot(aggByInterval$interval, aggByInterval$averageSteps, type = "l", 
+#        xlab = "interval", ylab = "average_steps", 
+#        main = "average steps in different intervals.")
+
+  g <- ggplot(data = aggByInterval, aes(x = interval, y = averageSteps))
+  g <- g + geom_line()
+  g <- g + labs(x = "interval", y = "average steps")
+  g <- g + ggtitle("average steps in different intervals")
+  print(g)
   
 # maximum average  number of steps
   maxSteps <- max(aggByInterval$averageSteps)

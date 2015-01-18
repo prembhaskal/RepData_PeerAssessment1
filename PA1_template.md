@@ -72,9 +72,11 @@ The median number of steps are 10765.
   aggByInterval <- aggregate(completeData$steps, by = list(completeData$interval), FUN = mean)
   colnames(aggByInterval) <- c("interval", "averageSteps")
   
-  plot(aggByInterval$interval, aggByInterval$averageSteps, type = "l", 
-       xlab = "interval", ylab = "average_steps",
-       main = "average steps in different intervals.")
+  g <- ggplot(data = aggByInterval, aes(x = interval, y = averageSteps))
+  g <- g + geom_line()
+  g <- g + labs(x = "interval", y = "average steps")
+  g <- g + ggtitle("average steps in different intervals")
+  print(g)
 ```
 
 ![plot of chunk average_daily_activity_pattern](figure/average_daily_activity_pattern-1.png) 
