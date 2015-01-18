@@ -27,11 +27,16 @@ library(ggplot2)
   #     xlab = "day", ylab = "total steps", cex.lab = 0.2, las = 2, space = 0.5,
   #     main = "total steps taken on each day")
 
-  hist(aggByDate$totalSteps, breaks = 15,
-       xlim = c(0, 25000), ylim = c(0,20),
-       xlab = "total steps",
-       main = "histogram - total steps per day")
+#   hist(aggByDate$totalSteps, breaks = 15,
+#        xlim = c(0, 25000), ylim = c(0,20),
+#        xlab = "total steps",
+#        main = "histogram - total steps per day")
 
+  g <- ggplot(data = aggByDate, aes(x = totalSteps))
+  g <- g + geom_histogram(aes(fill = ..count..))
+  g <- g + labs(x = "total steps", y = "frequency")
+  g <- g + ggtitle("histogram - total steps per day")
+  print(g)
 
 # mean
   meanSteps <- mean(aggByDate$totalSteps)
@@ -91,16 +96,22 @@ library(ggplot2)
   colnames(filledAggByDate) <- c("date", "totalSteps")
   
   # barplot(filledAggByDate$totalSteps, names.arg = filledAggByDate$date)
-  g <- ggplot(data = filledAggByDate, aes(x = date, y = totalSteps))
-  g <- g + geom_bar(stat = "identity")
-  g <- g + labs(x = "date", y = "total steps")
-  g <- g + ggtitle("imputed data - total number of steps per day")
-  print(g)
+#   g <- ggplot(data = filledAggByDate, aes(x = date, y = totalSteps))
+#   g <- g + geom_bar(stat = "identity")
+#   g <- g + labs(x = "date", y = "total steps")
+#   g <- g + ggtitle("imputed data - total number of steps per day")
+#   print(g)
 
-  hist(filledAggByDate$totalSteps, breaks = 15,
-     xlim = c(0, 25000), ylim = c(0,25),
-     xlab = "total steps",
-     main = "histogram - imputed day total steps per day")
+#   hist(filledAggByDate$totalSteps, breaks = 15,
+#      xlim = c(0, 25000), ylim = c(0,25),
+#      xlab = "total steps",
+#      main = "histogram - imputed day total steps per day")
+
+  g <- ggplot(data = filledAggByDate, aes(x = totalSteps))
+  g <- g + geom_histogram(aes(fill = ..count..))
+  g <- g + labs(x = "total steps", y = "frequency")
+  g <- g + ggtitle("histogram - imputed day total steps per day")
+  print(g)
   
   # finding mean
   filledMeanSteps <- mean(filledAggByDate$totalSteps)

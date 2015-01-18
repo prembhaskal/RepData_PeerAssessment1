@@ -41,10 +41,15 @@ opts_chunk$set(fig.width = 12)
   aggByDate <- aggregate(completeData$steps, by = list(completeData$date), FUN = sum)
   colnames(aggByDate) <- c("date", "totalSteps")
   
-  hist(aggByDate$totalSteps, breaks = 15,
-       xlim = c(0, 25000), ylim = c(0,25),
-       xlab = "total steps",
-       main = "histogram - total steps per day")
+  g <- ggplot(data = aggByDate, aes(x = totalSteps))
+  g <- g + geom_histogram(aes(fill = ..count..))
+  g <- g + labs(x = "total steps", y = "frequency")
+  g <- g + ggtitle("histogram - total steps per day")
+  print(g)
+```
+
+```
+## stat_bin: binwidth defaulted to range/30. Use 'binwidth = x' to adjust this.
 ```
 
 ![plot of chunk total_steps_per_day](figure/total_steps_per_day-1.png) 
@@ -130,10 +135,15 @@ The missing values in any interval are replaced by average steps for that interv
   filledAggByDate <- aggregate(filledActData$steps, by = list(filledActData$date), FUN = sum)
   colnames(filledAggByDate) <- c("date", "totalSteps")
   
-  hist(filledAggByDate$totalSteps, breaks = 15,
-     xlim = c(0, 25000), ylim = c(0,25),
-     xlab = "total steps",
-     main = "histogram - imputed day total steps per day")
+  g <- ggplot(data = filledAggByDate, aes(x = totalSteps))
+  g <- g + geom_histogram(aes(fill = ..count..))
+  g <- g + labs(x = "total steps", y = "frequency")
+  g <- g + ggtitle("histogram - imputed day total steps per day")
+  print(g)
+```
+
+```
+## stat_bin: binwidth defaulted to range/30. Use 'binwidth = x' to adjust this.
 ```
 
 ![plot of chunk total_steps_filled_dataset](figure/total_steps_filled_dataset-1.png) 
